@@ -1,9 +1,9 @@
 import telebot
 from telebot import types
 
-operators = [1494200750]  #список из id операторов
+operators = []  #список из id операторов
 
-mytoken = '7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA'
+mytoken = ''
 bot = telebot.TeleBot(mytoken)
 
 
@@ -33,19 +33,31 @@ def reg_confirming(message, bot):
                                   f" чтобы его отправить.", parse_mode='HTML')
 
 pictures = []#хранит значения фоток
+albums_id = {} #словарь для обработки альбомов
+flag = {} #флаг для того, чтобы дать команду боту, когда нужно записывать фотки (true), а когда нет
 
 @bot.message_handler(commands=["pass"]) #сдать задание
 def pass_task(message): 
         bot.send_message(message.chat.id, "Отправьте, пожалуйста, фотографии выполнения задания, а также формулировку "
                                       "задания в одном сообщении. После сообщения с фотографиями пришлите /got")
         pictures.clear()
+        global flag
+        if message.chat.id not in flag:
+            flag[message.chat.id] = True
         bot.register_next_step_handler(message, get_task, bot)
         
 @bot.message_handler(commands=["got"]) #пользователь прислал полностью задания
 def pass_task(message):
-        bot.send_message(1494200750, f"Пользователь <b>{message.chat.id}</b> досдал задание:", parse_mode='HTML') 
-        bot.send_media_group(1494200750,pictures)
-        pictures.clear()
+        global flag
+        if message.chat.id not in flag:
+            bot.send_message(message.chat.id, "Сначала вам нужно получить задание, ожидайте)")
+            return
+        bot.send_message(message.chat.id, "Успешно отправлено! Ожидайте следующего задания!")
+        bot.send_message(123457689, f"Пользователь <b>{message.chat.id}</b> досдал задание:", parse_mode='HTML') 
+        if len(pictures):
+            bot.send_media_group(123457689,pictures)
+            pictures.clear()
+        flag[message.chat.id] = False
 
 def get_task(message, bot):
     if message.content_type not in ['photo','document']:
@@ -59,19 +71,43 @@ def get_task(message, bot):
         bot.send_message(message.chat.id, "Похоже, что вы не добавили описание задания :(\nЧтобы сдать задание, "
                                           "напишите /pass еще раз ")
         return
-    
+        
+    #for oper_id in operators:
+    bot.send_message(123457689, f"Пользователь <b>{message.chat.id}</b> сдал задание:", parse_mode='HTML')
+    bot.forward_message(123457689, message.chat.id, message.message_id)   #вот эта штука отправляет только 1 фото
+    #bot.send_media_group(123457689, [types.InputMediaPhoto(message.photo[-1].file_id),types.InputMediaPhoto(message.photo[-2].file_id)])
+    bot.send_message(123457689, f"Пользователь <b>{message.chat.id}</b> ждет следующего задания. Напишите <code>/send "
+                                  f"{message.chat.id} [текст задания]</code>, чтобы его отправить.", parse_mode='HTML')
     
 
-    #for oper_id in operators:
-    bot.send_message(1494200750, f"Пользователь <b>{message.chat.id}</b> сдал задание:", parse_mode='HTML')
-    bot.forward_message(1494200750, message.chat.id, message.message_id)   #вот эта штука отправляет только 1 фото
-    #bot.send_media_group(1494200750, [types.InputMediaPhoto(message.photo[-1].file_id),types.InputMediaPhoto(message.photo[-2].file_id)])
-    bot.send_message(1494200750, f"Пользователь <b>{message.chat.id}</b> ждет следующего задания. Напишите <code>/send "
-                                  f"{message.chat.id} [текст задания]</code>, чтобы его отправить.", parse_mode='HTML')
 
 @bot.message_handler(content_types=["photo","document"])
 def get_pictures(message):
-    pictures.append(types.InputMediaPhoto(message.photo[0].file_id))
+    global flag
+    # if flag==0:
+        
+    #     # keyboard = telebot.types.InlineKeyboardMarkup()
+    #     # button_yes = telebot.types.InlineKeyboardButton(text="Да",
+    #     #                                              callback_data='get_pictures')
+    #     # button_no = telebot.types.InlineKeyboardButton(text="Нет",
+    #     #                                              callback_data='dont_get_pictures')
+    #     # keyboard.add(button_yes, button_no)
+    # else:
+
+    if hasattr(message,'media_group_id'):
+        gr_id = message.media_group_id
+        global albums_id
+        if gr_id not in albums_id:
+            albums_id[gr_id] = True
+            if message.chat.id not in flag or not flag[message.chat.id]: bot.send_message(message.chat.id,"Очень крутые фотографии! Но, кажется, они не относятся к текущему заданию")
+        pictures.append(types.InputMediaPhoto(message.photo[0].file_id))
+    
+
+
+# @bot.callback_query_handler(func = lambda call: call.data == 'get_pictures')
+# def callback_get_pictures(message):
+#     global flag
+#     flag = 1
     
 @bot.message_handler(commands=["send_album"]) #отправить альбом пользователю
 def send_album(message):

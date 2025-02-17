@@ -1,9 +1,9 @@
 import telebot
 from telebot import types
 
-operators = []  #список из id операторов
+operators = [1494200750]  #список из id операторов
 
-mytoken = "bot_token"
+mytoken = '7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA'
 bot = telebot.TeleBot(mytoken)
 
 
@@ -32,12 +32,20 @@ def reg_confirming(message, bot):
                                   f"первого задания.\n Напишите <code>/send {message.chat.id} [текст задания]</code>,"
                                   f" чтобы его отправить.", parse_mode='HTML')
 
+pictures = []#хранит значения фоток
 
 @bot.message_handler(commands=["pass"]) #сдать задание
+def pass_task(message): 
+        bot.send_message(message.chat.id, "Отправьте, пожалуйста, фотографии выполнения задания, а также формулировку "
+                                      "задания в одном сообщении. После сообщения с фотографиями пришлите /got")
+        pictures.clear()
+        bot.register_next_step_handler(message, get_task, bot)
+        
+@bot.message_handler(commands=["got"]) #пользователь прислал полностью задания
 def pass_task(message):
-    bot.send_message(message.chat.id, "Отправьте, пожалуйста, фотографии выполнения задания, а также формулировку "
-                                      "задания в одном сообщении.")
-    bot.register_next_step_handler(message, get_task, bot)
+        bot.send_message(1494200750, f"Пользователь <b>{message.chat.id}</b> досдал задание:", parse_mode='HTML') 
+        bot.send_media_group(1494200750,pictures)
+        pictures.clear()
 
 def get_task(message, bot):
     if message.content_type not in ['photo','document']:
@@ -51,14 +59,20 @@ def get_task(message, bot):
         bot.send_message(message.chat.id, "Похоже, что вы не добавили описание задания :(\nЧтобы сдать задание, "
                                           "напишите /pass еще раз ")
         return
+    
+    
 
-    for oper_id in operators:
-        bot.send_message(oper_id, f"Пользователь <b>{message.chat.id}</b> сдал задание:", parse_mode='HTML')
-        bot.forward_message(oper_id, message.chat.id, message.message_id)   #вот эта штука отправляет только 1 фото
-        bot.send_message(oper_id, f"Пользователь <b>{message.chat.id}</b> ждет следующего задания. Напишите <code>/send "
+    #for oper_id in operators:
+    bot.send_message(1494200750, f"Пользователь <b>{message.chat.id}</b> сдал задание:", parse_mode='HTML')
+    bot.forward_message(1494200750, message.chat.id, message.message_id)   #вот эта штука отправляет только 1 фото
+    #bot.send_media_group(1494200750, [types.InputMediaPhoto(message.photo[-1].file_id),types.InputMediaPhoto(message.photo[-2].file_id)])
+    bot.send_message(1494200750, f"Пользователь <b>{message.chat.id}</b> ждет следующего задания. Напишите <code>/send "
                                   f"{message.chat.id} [текст задания]</code>, чтобы его отправить.", parse_mode='HTML')
 
-
+@bot.message_handler(content_types=["photo","document"])
+def get_pictures(message):
+    pictures.append(types.InputMediaPhoto(message.photo[0].file_id))
+    
 @bot.message_handler(commands=["send_album"]) #отправить альбом пользователю
 def send_album(message):
     pass

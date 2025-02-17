@@ -42,14 +42,13 @@ def pass_task(message):
                                       "задания в одном сообщении. После сообщения с фотографиями пришлите /got")
         pictures.clear()
         global flag
-        if message.chat.id not in flag:
-            flag[message.chat.id] = True
+        flag[message.chat.id] = True
         bot.register_next_step_handler(message, get_task, bot)
         
 @bot.message_handler(commands=["got"]) #пользователь прислал полностью задания
 def pass_task(message):
         global flag
-        if message.chat.id not in flag:
+        if message.chat.id not in flag or not flag[message.chat.id]:
             bot.send_message(message.chat.id, "Сначала вам нужно получить задание, ожидайте)")
             return
         bot.send_message(message.chat.id, "Успешно отправлено! Ожидайте следующего задания!")

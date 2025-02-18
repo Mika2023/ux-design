@@ -7,7 +7,7 @@ operators = [1494200750]  #список из id операторов
 
 mytoken = '7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA'
 bot = telebot.TeleBot(mytoken)
-
+app = Flask(__name__)
 
 @bot.message_handler(commands=["data"])  #получить информацию из сообщения в тг
 def data(message):

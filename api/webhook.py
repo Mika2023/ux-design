@@ -7,7 +7,7 @@ app = Flask(__name__)
 TOKEN = "7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA"
 bot = telebot.TeleBot(TOKEN)
 
-@app.route('api/webhook', methods=['POST'])
+@app.route('/api/webhook', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)

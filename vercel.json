@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "api/bot.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+        {
+            "src":"/7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA",
+            "dest":"api/webhook.py"
+        }
+    ]
+  }

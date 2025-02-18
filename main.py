@@ -1,6 +1,7 @@
 import telebot
 from telebot import types
-from background import keep_alive
+import os
+from flask import Flask, app, request
 
 operators = [1494200750]  #список из id операторов
 
@@ -260,5 +261,20 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
+# Вебхук для обработки запросов
+@app.route(f'/{'7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA'}', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+    bot.process_new_updates([update])
+    return 'OK', 200
+
+@app.route('/')
+def index():
+    return 'Telegram Bot is running!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 #keep_alive()
-bot.polling(none_stop=True, interval=0)
+#bot.polling(none_stop=True, interval=0)

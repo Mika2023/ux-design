@@ -1,5 +1,6 @@
 import telebot
 from telebot import types
+from background import keep_alive
 
 operators = [1494200750]  #список из id операторов
 
@@ -259,5 +260,5 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
-
+keep_alive()
 bot.polling(none_stop=True, interval=0)

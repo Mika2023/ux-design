@@ -260,5 +260,5 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
-keep_alive()
+#keep_alive()
 bot.polling(none_stop=True, interval=0)

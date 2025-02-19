@@ -280,7 +280,7 @@ def webhook():
         for handler in bot.message_handlers:
             if "filters" in handler and callable(handler["filters"]):
                 if handler["filters"](update.message):
-                    print(f"Сообщение передано в {handler["function"]}")
+                    print(f"Сообщение передано в {handler['function']}")
                     handler["function"](update.message)
                     break
     else: print("нет update.message")

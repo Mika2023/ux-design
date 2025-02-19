@@ -283,7 +283,7 @@ import requests
 @app.route("/test", methods=["GET"])
 def test():
     try:
-        response = requests.get("https://api.telegram.org/botYOUR_TOKEN/getMe")
+        response = requests.get("https://api.telegram.org/bot7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA/getMe")
         return response.text, 200
     except Exception as e:
         return str(e), 500

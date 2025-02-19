@@ -15,7 +15,7 @@ def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)
     print("тип ", update)
-    bot.send_message("Пришло обновление")
+    bot.send_message(1494200750,"Пришло обновление")
     bot.process_new_updates([update])
     return 'OK', 200
 

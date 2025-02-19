@@ -9,6 +9,23 @@ mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 app = Flask(__name__)
 
+@app.route(f'/{mytoken}', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+    print("Получено новое обновление!", update)
+    bot.process_new_updates([update])
+    print("все вызвано!")
+    return 'OK', 200
+
+@app.route('/', methods=['GET'])
+def home():
+    return 'OK', 200
+
+@app.route(f'/{mytoken}', methods=['GET'])
+def token():
+    return 'OK', 200
+
 @bot.message_handler(commands=["data"])  #получить информацию из сообщения в тг
 def data(message):
     bot.send_message(message.chat.id, str(message.reply_to_message)[:4096])
@@ -59,6 +76,7 @@ flag = {
 
 @bot.message_handler(commands=["pass"])  #сдать задание
 def pass_task(message):
+    print("Обработчик pass сработал")
     bot.send_message(
         message.chat.id,
         "Отправьте, пожалуйста, фотографии выполнения задания, а также формулировку "
@@ -263,25 +281,11 @@ def buttons(call):
 
 
 #вебхук
-@app.route(f'/{mytoken}', methods=['POST'])
-def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    update = telebot.types.Update.de_json(json_str)
-    print("Получено новое обновление!", update)
-    bot.process_new_updates([update])
-    print("все вызвано!")
-    return 'OK', 200
 
-@app.route('/', methods=['GET'])
-def home():
-    return 'OK', 200
-
-@app.route(f'/{mytoken}', methods=['GET'])
-def token():
-    return 'OK', 200
 
 
 if __name__=="__main__":
+    bot.send_message(1494200750,"Бот запущен!")
     from waitress import serve
     serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))
 

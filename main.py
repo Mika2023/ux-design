@@ -9,25 +9,14 @@ mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 app = Flask(__name__)
 
-import requests
-
-TOKEN = mytoken
-CHAT_ID = "1494200750"
-
-url = f"https://api.telegram.org/bot{TOKEN}/getMe"
-
-response = requests.get(url)
-
-print("Статус код:", response.status_code)
-print("Ответ:", response.text)
 
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
-    print(f"Получено сообщение!{json_str}")
     update = telebot.types.Update.de_json(json_str)
+    print("тип ", update.to_dict().keys())
+    bot.send_message("Пришло обновление")
     bot.process_new_updates([update])
-    print("update сработал")
     return 'OK', 200
 
 @app.route('/', methods=['GET'])

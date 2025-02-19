@@ -278,10 +278,14 @@ def webhook():
         bot.process_new_messages([update.message])
         print("Сообщение пришло, ща вызовем хэндлер",update.message.text)
         for handler in bot.message_handlers:
-                if update.message.content_type in handler["filters"]["content_types"] and update.message.text[1:] in handler["filters"]["commands"]:
-                    print(f"Сообщение передано в {handler['function']}")
-                    handler["function"](update.message)
-                    break
+                if update.message.content_type in handler["filters"]["content_types"]:
+                    if "commands" in handler["filters"] and update.message.text[1:] in handler["filters"]["commands"]:
+                        print(f"Сообщение передано в {handler['function']}")
+                        handler["function"](update.message)
+                        break
+                    elif update.message.content_type in handler["filters"]["content_types"]:
+                        handler["function"](update.message)
+                        break
     else: print("нет update.message")
     
     return 'OK', 200

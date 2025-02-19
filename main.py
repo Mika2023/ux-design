@@ -7,7 +7,7 @@ operators = [1494200750]  #список из id операторов
 
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
-print("Хэндлеры: ",bot.message_handlers)
+
 app = Flask(__name__)
 
 
@@ -291,11 +291,9 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
+print("Хэндлеры: ",bot.message_handlers)
 
 #вебхук
-
-
-
 if __name__=="__main__":
     bot.send_message(1494200750,"Бот запущен!")
     from waitress import serve

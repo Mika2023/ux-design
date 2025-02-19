@@ -7,9 +7,7 @@ operators = [1494200750]  #список из id операторов
 
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
-print("Хэндлеры:")
-for handler in bot.message_handlers:
-    print(f"{handler.filters} - {handler.callabck}\n")
+print("Хэндлеры: ",bot.message_handlers)
 app = Flask(__name__)
 
 

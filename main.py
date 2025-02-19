@@ -13,12 +13,10 @@ import requests
 
 TOKEN = mytoken
 CHAT_ID = "1494200750"
-MESSAGE = "Проверка связи с Telegram API"
 
-url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-data = {"chat_id": CHAT_ID, "text": MESSAGE}
+url = f"https://api.telegram.org/bot{TOKEN}/getMe"
 
-response = requests.post(url, json=data)
+response = requests.get(url)
 
 print("Статус код:", response.status_code)
 print("Ответ:", response.text)

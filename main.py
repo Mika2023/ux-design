@@ -5,7 +5,7 @@ from flask import Flask, app, request
 
 operators = [1494200750]  #список из id операторов
 
-mytoken = '7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA'
+mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 app = Flask(__name__)
 

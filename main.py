@@ -13,9 +13,7 @@ app = Flask(__name__)
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)
-    print("Получено новое обновление!", update)
     bot.process_new_updates([update])
-    print("все вызвано!")
     return 'OK', 200
 
 @app.route('/', methods=['GET'])

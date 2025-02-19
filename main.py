@@ -267,7 +267,9 @@ def buttons(call):
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)
+    print("Получено новое обновление!", update)
     bot.process_new_updates([update])
+    print("все вызвано!")
     return 'OK', 200
 
 @app.route('/', methods=['GET'])
@@ -278,15 +280,6 @@ def home():
 def token():
     return 'OK', 200
 
-import requests
-
-@app.route("/test", methods=["GET"])
-def test():
-    try:
-        response = requests.get("https://api.telegram.org/bot7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA/getMe")
-        return response.text, 200
-    except Exception as e:
-        return str(e), 500
 
 if __name__=="__main__":
     from waitress import serve

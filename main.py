@@ -279,7 +279,7 @@ def buttons(call):
     else:
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
-
+print("Хэндлеры: ",bot.message_handlers)
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')

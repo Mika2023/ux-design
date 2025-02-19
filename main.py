@@ -9,6 +9,20 @@ mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 app = Flask(__name__)
 
+import requests
+
+TOKEN = mytoken
+CHAT_ID = "1494200750"
+MESSAGE = "Проверка связи с Telegram API"
+
+url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+data = {"chat_id": CHAT_ID, "text": MESSAGE}
+
+response = requests.post(url, json=data)
+
+print("Статус код:", response.status_code)
+print("Ответ:", response.text)
+
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')

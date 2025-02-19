@@ -8,23 +8,10 @@ operators = [1494200750]  #список из id операторов
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 
-app = Flask(__name__)
 
 
+print("Хэндлеры: ",bot.message_handlers)
 
-
-@bot.message_handler(content_types=['text', 'photo', 'document', 'sticker', 'audio'])
-def all_messages(message):
-    print("Пришло сообщение:", message.text if message.text else "Нет текста")
-    bot.reply_to(message, "Принял!")
-
-@app.route('/', methods=['GET'])
-def home():
-    return 'OK', 200
-
-@app.route(f'/{mytoken}', methods=['GET'])
-def token():
-    return 'OK', 200
 
 @bot.message_handler(commands=["data"])  #получить информацию из сообщения в тг
 def data(message):
@@ -280,6 +267,8 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
+app = Flask(__name__)
+print("Хэндлеры: ",bot.message_handlers)
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
@@ -288,12 +277,24 @@ def webhook():
     bot.send_message(1494200750,"Пришло обновление")
     if update.message:
         print("Сообщение пришло, ща вызовем хэндлер")
-        bot.message_handlers[0].callback(update.message)
+        
     else: print("нет update.message")
     bot.process_new_updates([update])
     return 'OK', 200
-print("Хэндлеры: ",bot.message_handlers)
 
+
+@bot.message_handler(content_types=['text', 'photo', 'document', 'sticker', 'audio'])
+def all_messages(message):
+    print("Пришло сообщение:", message.text if message.text else "Нет текста")
+    bot.reply_to(message, "Принял!")
+
+@app.route('/', methods=['GET'])
+def home():
+    return 'OK', 200
+
+@app.route(f'/{mytoken}', methods=['GET'])
+def token():
+    return 'OK', 200
 #вебхук
 if __name__=="__main__":
     bot.send_message(1494200750,"Бот запущен!")

@@ -7,6 +7,9 @@ operators = [1494200750]  #список из id операторов
 
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
+print("Хэндлеры:")
+for handler in bot.message_handlers:
+    print(f"{handler.filters} - {handler.callabck}\n")
 app = Flask(__name__)
 
 
@@ -16,6 +19,10 @@ def webhook():
     update = telebot.types.Update.de_json(json_str)
     print("тип ", update)
     bot.send_message(1494200750,"Пришло обновление")
+    if update.message:
+        print("Сообщение пришло, ща вызовем хэндлер")
+        bot.message_handlers[0].callback(update.message)
+    else: print("нет update.message")
     bot.process_new_updates([update])
     return 'OK', 200
 

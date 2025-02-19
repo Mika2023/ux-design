@@ -8,7 +8,7 @@ operators = [1494200750]  #список из id операторов
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 
-app = Flask(__name__)
+
 
 print("Хэндлеры: ",bot.message_handlers)
 
@@ -267,7 +267,7 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
-
+app = Flask(__name__)
 print("Хэндлеры: ",bot.message_handlers)
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():

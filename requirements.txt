@@ -20,6 +20,8 @@ flake8==7.1.1
 
 Flask==3.1.0
 
+gunicorn==23.0.0
+
 identify==2.6.1
 
 idna==3.10

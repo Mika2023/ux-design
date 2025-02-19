@@ -19,6 +19,11 @@ def webhook():
     bot.process_new_updates([update])
     return 'OK', 200
 
+@bot.message_handler(content_types=['text', 'photo', 'document', 'sticker', 'audio'])
+def all_messages(message):
+    print("Пришло сообщение:", message.text if message.text else "Нет текста")
+    bot.reply_to(message, "Принял!")
+
 @app.route('/', methods=['GET'])
 def home():
     return 'OK', 200

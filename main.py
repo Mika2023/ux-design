@@ -278,7 +278,7 @@ def webhook():
         print("Сообщение пришло, ща вызовем хэндлер",update.message.text)
         bot.message_handlers[0]["function"](update.message)
     else: print("нет update.message")
-    bot.process_new_updates([update])
+    bot.process_new_messages([update.message])
     return 'OK', 200
 
 

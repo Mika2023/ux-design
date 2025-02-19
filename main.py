@@ -278,6 +278,39 @@ def webhook():
     print("Хэндлеры: ",bot.message_handlers)
     if update.message:
         print("Сообщение пришло, ща вызовем хэндлер",update.message.text)
+        match update.message.text:
+            case "/data":
+                data(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+            case "/help":
+                help(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+            case "/start","/reg":
+                start(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+            case "/pass":
+                pass_task(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+            case "/got":
+                get_photos(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+            case "/send_album":
+                send_album(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+            case "/send_album_to_user":
+                send_album_to_user(update.message)
+                bot.process_new_updates([update])
+                return 'OK', 200
+        match update.message.content_type:
+            case "text": text_received(update.message)
+            case "photo","document": get_pictures(update.message)
+
 
     else: print("нет update.message")
     bot.process_new_updates([update])

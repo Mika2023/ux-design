@@ -8,8 +8,6 @@ operators = [1494200750]  #список из id операторов
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken)
 
-
-
 print("Хэндлеры: ",bot.message_handlers)
 
 
@@ -266,6 +264,9 @@ def buttons(call):
     else:
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
+
+del bot
+bot = telebot.TeleBot(mytoken)
 
 app = Flask(__name__)
 

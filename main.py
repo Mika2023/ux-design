@@ -12,8 +12,10 @@ app = Flask(__name__)
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
+    print(f"Получено сообщение!{json_str}")
     update = telebot.types.Update.de_json(json_str)
     bot.process_new_updates([update])
+    print("update сработал")
     return 'OK', 200
 
 @app.route('/', methods=['GET'])
@@ -31,6 +33,7 @@ def data(message):
 
 @bot.message_handler(commands=["help"])  #помощь для пользователя
 def help(message):
+    print("/help сработал")
     bot.send_message(
         message.chat.id,
         "Напишите нам, если вам понадобится помощь: @Dreams_and_lights"

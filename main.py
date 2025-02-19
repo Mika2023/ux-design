@@ -11,18 +11,7 @@ bot = telebot.TeleBot(mytoken)
 app = Flask(__name__)
 
 
-@app.route(f'/{mytoken}', methods=['POST'])
-def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    update = telebot.types.Update.de_json(json_str)
-    print("тип ", update)
-    bot.send_message(1494200750,"Пришло обновление")
-    if update.message:
-        print("Сообщение пришло, ща вызовем хэндлер")
-        bot.message_handlers[0].callback(update.message)
-    else: print("нет update.message")
-    bot.process_new_updates([update])
-    return 'OK', 200
+
 
 @bot.message_handler(content_types=['text', 'photo', 'document', 'sticker', 'audio'])
 def all_messages(message):
@@ -291,6 +280,18 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
+@app.route(f'/{mytoken}', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+    print("тип ", update)
+    bot.send_message(1494200750,"Пришло обновление")
+    if update.message:
+        print("Сообщение пришло, ща вызовем хэндлер")
+        bot.message_handlers[0].callback(update.message)
+    else: print("нет update.message")
+    bot.process_new_updates([update])
+    return 'OK', 200
 print("Хэндлеры: ",bot.message_handlers)
 
 #вебхук

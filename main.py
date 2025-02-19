@@ -265,9 +265,6 @@ def buttons(call):
         bot.send_message(call.message.chat.id, 'Необработанная кнопка')
         bot.answer_callback_query(call.id)
 
-del bot
-bot = telebot.TeleBot(mytoken)
-
 app = Flask(__name__)
 
 @app.route(f'/{mytoken}', methods=['POST'])

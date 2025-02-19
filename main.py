@@ -268,13 +268,14 @@ def buttons(call):
         bot.answer_callback_query(call.id)
 
 app = Flask(__name__)
-print("Хэндлеры: ",bot.message_handlers)
+
 @app.route(f'/{mytoken}', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)
     print("тип ", update)
     bot.send_message(1494200750,"Пришло обновление")
+    print("Хэндлеры: ",bot.message_handlers)
     if update.message:
         print("Сообщение пришло, ща вызовем хэндлер")
         

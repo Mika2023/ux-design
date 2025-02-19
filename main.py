@@ -7,6 +7,7 @@ operators = [1494200750]  #список из id операторов
 
 mytoken = '7711604335:AAF-WmHthrkkIrzOyXhz07lkYFP4DqsxjuA'
 bot = telebot.TeleBot(mytoken)
+app = Flask(__name__)
 
 @bot.message_handler(commands=["data"])  #получить информацию из сообщения в тг
 def data(message):
@@ -261,6 +262,17 @@ def buttons(call):
         bot.answer_callback_query(call.id)
 
 
+#вебхук
+@app.route(f'/{mytoken}', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+    bot.process_new_updates([update])
+    return 'OK', 200
+
+if __name__=="__main__":
+    from waitress import serve
+    serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))
 
 #keep_alive()
-bot.polling(none_stop=True, interval=0)
+#bot.polling(none_stop=True, interval=0)

@@ -270,6 +270,10 @@ def webhook():
     bot.process_new_updates([update])
     return 'OK', 200
 
+@app.route('/', methods=['GET'])
+def home():
+    return 'OK', 200
+
 if __name__=="__main__":
     from waitress import serve
     serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))

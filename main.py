@@ -278,6 +278,12 @@ def home():
 def token():
     return 'OK', 200
 
+@app.route("/debug", methods=["GET"])
+def debug():
+    import os
+    response = os.popen("curl -I https://api.telegram.org").read()
+    return f"<pre>{response}</pre>", 200
+
 if __name__=="__main__":
     from waitress import serve
     serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))

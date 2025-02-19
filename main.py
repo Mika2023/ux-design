@@ -274,6 +274,10 @@ def webhook():
 def home():
     return 'OK', 200
 
+@app.route(f'/{mytoken}', methods=['GET'])
+def token():
+    return 'OK', 200
+
 if __name__=="__main__":
     from waitress import serve
     serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))

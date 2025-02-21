@@ -415,7 +415,7 @@ def webhook():
     #                         handler["function"](update.message)
     #                         break
     bot.process_new_updates([update])
-    else: print("нет update.message")
+    # else: print("нет update.message")
     
     return 'OK', 200
 

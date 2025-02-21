@@ -430,8 +430,8 @@ def token():
 #вебхук
 if __name__=="__main__":
     bot.send_message(1494200750,"Бот запущен!")
-    from waitress import serve
-    serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))
+    app.run(host="0.0.0.0",port=int(os.getenv("PORT",5000)))
+    # serve(app,host="0.0.0.0",port=int(os.getenv("PORT",5000)))
 
 #keep_alive()
 #bot.polling(none_stop=True, interval=0)

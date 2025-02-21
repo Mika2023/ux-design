@@ -414,6 +414,9 @@ def webhook():
     #                         print(f"Сообщение передано в {handler['function']}")
     #                         handler["function"](update.message)
     #                         break
+    @bot.message_handler(commands=["start"])
+    def start(message):
+        bot.send_message(message.chat.id,"hello")
     bot.process_new_updates([update])
     # else: print("нет update.message")
     

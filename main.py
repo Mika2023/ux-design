@@ -8,8 +8,6 @@ operators = [1494200750]  #список из id операторов
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken,threaded=False)
 
-print("Хэндлеры: ",bot.message_handlers)
-
 
 @bot.message_handler(commands=["data"])  #получить информацию из сообщения в тг
 def date(message):
@@ -18,11 +16,9 @@ def date(message):
 
 @bot.message_handler(commands=["help"])  #помощь для пользователя
 def help(message):
-    print("/help сработал")
     bot.send_message(
         message.chat.id,
-        "Напишите нам, если вам понадобится помощь: @Dreams_and_lights"
-    )
+        "Напишите нам, если вам понадобится помощь: @Dreams_and_lights")
 
 
 @bot.message_handler(commands=["start",
@@ -62,7 +58,6 @@ flag = {
 
 @bot.message_handler(commands=["pass"])  #сдать задание
 def pass_task(message):
-    print("Обработчик pass сработал")
     bot.send_message(
         message.chat.id,
         "Отправьте, пожалуйста, фотографии выполнения задания, а также формулировку "
@@ -178,7 +173,8 @@ def send_album(message):
             oper_id,
             f"Пользователь <b>{message.chat.id}</b> хочет получить альбом! Отправьте ему "
             "альбом в ближайшее время\n\n"
-            "Чтобы отправить альбом, напишите /send_album_to_user "
+            "Чтобы отправить альбом, напишите /send_album_to_user ",
+            parse_mode='HTML'
         )
     bot.send_message(message.chat.id, "В ближайшее время вам отправят альбом!")
 
@@ -271,9 +267,6 @@ app = Flask(__name__)
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = telebot.types.Update.de_json(json_str)
-    print("тип ", update)
-    bot.send_message(1494200750,"Пришло обновление")
-    print("Хэндлеры: ",bot.message_handlers)
     bot.process_new_updates([update])
     
     return 'OK', 200

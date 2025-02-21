@@ -196,7 +196,9 @@ def send_album_to_user_confirming(message):
 def send(message):
     if len(message.text.split(' ')) > 1:
         command, id = message.text.split(' ')[0], message.text.split(' ')[1]
-    else: bot.send_message(message.chat.id, "неверная команда!") 
+    else: 
+        bot.send_message(message.chat.id, "неверная команда!") 
+        return
     if command != '/send' or (
             not id.isdigit()):  #проверяем корректность команды
         bot.send_message(

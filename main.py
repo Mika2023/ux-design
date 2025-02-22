@@ -204,11 +204,10 @@ def send_album_to_user_confirming(message):
 
 # обработка команды /send
 def send(message):
-    if len(message.text.split(' ')) > 1:
-        command, id = message.text.split(' ')[0], message.text.split(' ')[1]
-    else: 
+    if len(message.text.split(' ')) <= 1:
         bot.send_message(message.chat.id, "неверная команда!") 
         return
+    command, id = message.text.split(' ')[0], message.text.split(' ')[1]
     if command != '/send' or (
             not id.isdigit()):  #проверяем корректность команды
         bot.send_message(

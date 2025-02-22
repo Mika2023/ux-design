@@ -261,7 +261,7 @@ def buttons(call):
 
         bot.send_message(int(target_id),
                          '<b>Ваше новое задание:</b>\n' + message_text +
-                         '\n\nКогда будете готовы отправить его, сначала <b>напишите <\b>/pass',
+                         '\n\nКогда будете готовы отправить его, сначала напишите /pass',
                          parse_mode='HTML')
         bot.edit_message_text(
             f'Пользователю {target_id} было отправлено задание: {message_text}',

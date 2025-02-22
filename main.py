@@ -3,7 +3,7 @@ from telebot import types
 import os
 from flask import Flask, app, request
 
-operators = [1494200750]  #список из id операторов
+operators = [1494200750,501337451,875771161,224996860]  #список из id операторов
 
 mytoken = os.getenv("TELEGRAN_TOKEN")
 bot = telebot.TeleBot(mytoken,threaded=False)
@@ -18,7 +18,10 @@ def date(message):
 def help(message):
     bot.send_message(
         message.chat.id,
-        "Напишите нам, если вам понадобится помощь: @Dreams_and_lights")
+        "<i>Информация по командам:</i>\n"
+        "Получили задание? Чтобы сдать задание (отправить фотографии), напишите /pass\nПосле отправки фотографий, напишите /got\n"
+        "Чтобы получить альбом, напишите /send_album\n\n"
+        "Нет нужной информации? Напишите нам: @Dreams_and_lights")
 
 
 @bot.message_handler(commands=["start",
